@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.board {
+  display: grid;
+  margin: 10px;
+}
+
+.square {
+  display: flexbox;
+  background-color: gray;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid black;
+}
+
+[has-bomb="true"] {
+  background-color: orange;
+}
+
+h3 {
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+img {
+  max-width: 95%;
+}
