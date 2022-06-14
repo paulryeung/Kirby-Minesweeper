@@ -8,6 +8,7 @@ let bombImg = "./images/bomb.jpg";
 let grassImg = "./images/grass.jpg";
 let gameEnd = false; //if true, clicking anywhere on the board should do nothing.
 let victory = false;
+let viewSize = "8vw";
 
 //==== DOM Variables ====
 let boardEl = document.querySelector(".board");
@@ -22,21 +23,10 @@ let hardgameEl = document.querySelector(".hardgamebutton");
 
 //set up the correct grid viewing sizes
 function setupGrid() {
-  //setup the CSS for correct viewing and squares
-  let gridCol = "";
-  let gridRow = "";
-
-  for (let w = 0; w < width; w++) {
-    gridCol = gridCol + "10vh ";
-  }
-  for (let h = 0; h < height; h++) {
-    gridRow = gridRow + "10vh ";
-  }
-  boardEl.style.gridTemplateColumns = gridCol;
-  boardEl.style.gridTemplateRows = gridRow;
+  //suggested change in code:
+  boardEl.style.gridTemplateColumns = `repeat(${width}, minmax(50px, 3vw))`;
+  boardEl.style.gridTemplateRows = `repeat(${height}, minmax(50px, 3vw))`;
 }
-//console.log(`grid columns settings now looks like: ${gridCol}`);
-//console.log(`grid rows settings now looks like: ${gridRow}`);
 
 //Scrambles an Array
 function scrambleArray(arr) {
@@ -508,6 +498,7 @@ easygameEl.addEventListener("click", function (evt) {
   width = 4;
   bombs = 4;
   numfields = width * height;
+  viewSize = "8vw";
   startGame();
 });
 
@@ -516,6 +507,7 @@ normalgameEl.addEventListener("click", function (evt) {
   width = 7;
   bombs = 10;
   numfields = width * height;
+  viewSize = "8vw";
   startGame();
 });
 
@@ -524,5 +516,6 @@ hardgameEl.addEventListener("click", function (evt) {
   width = 10;
   bombs = 30;
   numfields = width * height;
+  viewSize = "5vw";
   startGame();
 });
