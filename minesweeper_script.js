@@ -1,32 +1,42 @@
 //===== Constants and Variables =====
-let width = 3;
-let height = 3;
+let width = 4;
+let height = 4;
 let numfields = width * height;
-let bombs = 3;
+let bombs = 4;
 let flagImg = "./images/redflag.jpg";
 let bombImg = "./images/bomb.jpg";
+let grassImg = "./images/grass.jpg";
 let gameEnd = false; //if true, clicking anywhere on the board should do nothing.
 let victory = false;
 
-//==== CSS FOR THE GRID ====
+//==== DOM Variables ====
 let boardEl = document.querySelector(".board");
+let retryEl = document.querySelector(".retrybutton");
+let announceEl = document.querySelector(".announcer");
 
-//setup the CSS for correct viewing and squares
-let gridCol = "";
-let gridRow = "";
-for (let w = 0; w < width; w++) {
-  gridCol = gridCol + "10vh ";
-}
-for (let h = 0; h < height; h++) {
-  gridRow = gridRow + "10vh ";
+let easygameEl = document.querySelector(".easygamebutton");
+let normalgameEl = document.querySelector(".normalgamebutton");
+let hardgameEl = document.querySelector(".hardgamebutton");
+
+//============FUNCTIONS =====================
+
+//set up the correct grid viewing sizes
+function setupGrid() {
+  //setup the CSS for correct viewing and squares
+  let gridCol = "";
+  let gridRow = "";
+
+  for (let w = 0; w < width; w++) {
+    gridCol = gridCol + "10vh ";
+  }
+  for (let h = 0; h < height; h++) {
+    gridRow = gridRow + "10vh ";
+  }
+  boardEl.style.gridTemplateColumns = gridCol;
+  boardEl.style.gridTemplateRows = gridRow;
 }
 //console.log(`grid columns settings now looks like: ${gridCol}`);
 //console.log(`grid rows settings now looks like: ${gridRow}`);
-
-boardEl.style.gridTemplateColumns = gridCol;
-boardEl.style.gridTemplateRows = gridRow;
-
-//============Functions =====================
 
 //Scrambles an Array
 function scrambleArray(arr) {
@@ -63,6 +73,9 @@ function randomizeBombs() {
 function generateBoard() {
   let randomBombArray = randomizeBombs(width, height, bombs);
 
+  //set announcer to default
+  announceEl.textContent = "Let's clear some bombs!";
+
   //console.log(randomBombArray);
   //creating the board
   for (let h = 0; h < height; h++) {
@@ -76,6 +89,7 @@ function generateBoard() {
       squareEl.setAttribute("state", "hidden");
       squareEl.setAttribute("bomb-count", "0");
       squareEl.setAttribute("correct-move", "false");
+      squareEl.setAttribute("red-flagged", "false");
 
       //pop and set a bomb from the random Bomb array
       squareEl.setAttribute("has-bomb", randomBombArray.pop());
@@ -87,10 +101,10 @@ function generateBoard() {
 
       //Flag image, set to hidden
       let symbolEl = document.createElement("img");
-      //default hidden element is flag
-      symbolEl.src = "./images/redflag.jpg";
-      //symbolEl.src = "./images/7.jpg";
-      symbolEl.style.visibility = "hidden";
+      //default square element is grass
+      symbolEl.src = grassImg;
+
+      symbolEl.style.visibility = "visible";
 
       //append hidden symbol into the square
       squareEl.appendChild(symbolEl);
@@ -312,7 +326,6 @@ function checkGame() {
     for (let w = 0; w < width; w++) {
       let curID = `s${h}${w}`;
       let square = document.getElementById(curID);
-      console.log(`Entering square ${curID}`);
 
       //check if you clicked on a bomb and end game immediately, break out of loop
       if (
@@ -333,11 +346,12 @@ function checkGame() {
 
   //if every square is correct declare victory!
   if (countCorrectMoves === numfields) {
-    console.log("You have achieved victory!");
+    victory = true;
     endGame();
     //also check if bomb is tripped!
   } else if (bombTripped === true) {
     console.log("Explosion! You have been defeated.");
+    victory = false;
     endGame();
   }
 }
@@ -351,20 +365,48 @@ function endGame() {
   for (let h = 0; h < height; h++) {
     for (let w = 0; w < width; w++) {
       let curID = `s${h}${w}`;
-      let square = document.getElementById(curID);
+      let squareEl = document.getElementById(curID);
 
-      square.setAttribute("state", "revealed");
+      //if the square has a bomb, change the image to reveal it
+      if (squareEl.getAttribute("has-bomb") === "true") {
+        squareEl.firstChild.src = bombImg;
+      }
+
+      squareEl.setAttribute("state", "revealed");
     }
+  }
+
+  //change announcer text based on victory or defeat
+  if (victory === true) {
+    announceEl.textContent = "VICTORY! Time to go home for some cake!";
+  } else if (victory === false) {
+    announceEl.textContent = "EXPLOSION! Time to try again!";
+  }
+}
+//empty's the board by removing all child divs
+function emptyBoard() {
+  while (boardEl.firstChild) {
+    boardEl.removeChild(boardEl.firstChild);
   }
 }
 
-//calls generate board function
-generateBoard();
+function startGame() {
+  //set necessary variables;
+  gameEnd = false;
+  victory = false;
 
-assignBombCount();
+  emptyBoard();
+  setupGrid();
+  generateBoard();
+  assignBombCount();
+}
 
-//EVENT LISTENERS!!
+//calls first time to generate game upon page load
+startGame();
 
+//===============EVENT LISTENERS!!=====================
+
+//EVENTS IF YOU RIGHT CLICK
 //prevents Chrome contextmenu from popping up on right click in board window, also acts as Right click action
 boardEl.oncontextmenu = function (evt) {
   evt.preventDefault();
@@ -377,34 +419,33 @@ boardEl.oncontextmenu = function (evt) {
   let clickedSquare = evt.target;
   let imageEl = clickedSquare.firstChild;
 
-  //First check if you clicked on an existing red flag image (imageEl = null)
+  //First check if you clicked on an image, like red flag or grass
   if (clickedSquare.tagName === "IMG") {
     //correct the variables
     imageEl = clickedSquare;
     clickedSquare = imageEl.parentElement;
   }
 
-  //Check if it was hidden, or else do nothing
+  //Check if STATE was hidden, or else do nothing
   if (clickedSquare.getAttribute("state") == "hidden") {
-    //check if flag is visible, if so then turn it off
-    if (imageEl.style.visibility === "visible") {
-      //hide the flag again and toggle correct move to be false
-      imageEl.style.visibility = "hidden";
+    //check if flag is visible, if so then switch back to grass
+    if (clickedSquare.getAttribute("red-flagged") === "true") {
+      //switch the image to grass
+
+      clickedSquare.setAttribute("red-flagged", "false");
+      imageEl.src = grassImg;
       clickedSquare.setAttribute("correct-move", "false");
     }
-    //turn on the flag if it's not already on
+    //switch image to flag if not already
     else {
-      imageEl.style.visibility = "visible";
-
+      imageEl.src = flagImg;
+      clickedSquare.setAttribute("red-flagged", "true");
       //check if there is a bomb
       if (clickedSquare.getAttribute("has-bomb") === "true") {
         clickedSquare.setAttribute("correct-move", "true");
       }
     }
   }
-
-  console.log(clickedSquare);
-  console.log(imageEl);
   checkGame();
 };
 
@@ -418,8 +459,19 @@ boardEl.addEventListener("click", function (evt) {
   let clickedSquare = evt.target;
   let imageEl = clickedSquare.firstChild;
 
-  //ONLY DO ANYTHING IF THE SQUARE WAS HIDDEN TO BEGIN WITH
-  if (clickedSquare.getAttribute("state") == "hidden") {
+  //if left clicking an image, swap the two
+  if (clickedSquare.tagName === "IMG") {
+    //correct the variables
+    imageEl = clickedSquare;
+    clickedSquare = imageEl.parentElement;
+  }
+
+  //DON'T DO ANYTHING IF LEFT CLICKING A FLAG
+  if (clickedSquare.getAttribute("red-flagged") === "true") {
+    //do nothing
+  }
+  //ONLY DO ANYTHING IF THE SQUARE IS GRASS/NOT FLAGGED
+  else if (clickedSquare.getAttribute("state") == "hidden") {
     //first set the square to be revealed
     clickedSquare.setAttribute("state", "revealed");
 
@@ -428,10 +480,10 @@ boardEl.addEventListener("click", function (evt) {
       imageEl.src = bombImg;
       imageEl.style.visibility = "visible";
     }
-    //if the number is 0, only set move to be correct, do nothing or fan out special
+    //if the number is 0, simply hide the grass, do nothing or fan out special
     else if (clickedSquare.getAttribute("bomb-count") === "0") {
       clickedSquare.setAttribute("correct-move", "true");
-      console.log("do nothing!");
+      imageEl.style.visibility = "hidden";
     }
     //reveal an appropriate number, set the move to correct
     else {
@@ -442,7 +494,35 @@ boardEl.addEventListener("click", function (evt) {
     }
   }
 
-  console.log(clickedSquare);
-  console.log(imageEl);
   checkGame();
+});
+
+//RETRY BUTTON - will be left click only
+retryEl.addEventListener("click", function (evt) {
+  startGame();
+});
+
+//Buttons for different game difficulties
+easygameEl.addEventListener("click", function (evt) {
+  height = 4;
+  width = 4;
+  bombs = 4;
+  numfields = width * height;
+  startGame();
+});
+
+normalgameEl.addEventListener("click", function (evt) {
+  height = 7;
+  width = 7;
+  bombs = 10;
+  numfields = width * height;
+  startGame();
+});
+
+hardgameEl.addEventListener("click", function (evt) {
+  height = 10;
+  width = 10;
+  bombs = 30;
+  numfields = width * height;
+  startGame();
 });
