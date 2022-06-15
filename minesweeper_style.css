@@ -69,7 +69,7 @@ span {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 100%;
+  width: 90%;
   height: 100%;
 }
 
@@ -84,7 +84,7 @@ span {
 
 .square {
   display: flex;
-  background-color: gray;
+  background-color: green;
   background-size: cover;
   justify-content: center;
   align-items: center;
@@ -119,28 +119,72 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 25px;
+  margin: 20px;
 }
 
 .announcer {
   margin-top: 0;
   font-size: 30px;
   text-align: center;
+  margin-bottom: 0;
 }
 
 .statusgif {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  height: 200 px;
 }
 
 #retrybutton {
   box-sizing: border-box;
+  height: 30px;
   width: 120px;
   font-size: 20px;
   border-radius: 5px;
 }
 
+.flags-used {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.bombs-in-play {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#flag-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+#bomb-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.h3-icons-text {
+  font-size: 20px;
+}
+
+#spanbomb {
+  font-size: 40px;
+  color: red;
+}
+
+#spanflag {
+  font-size: 40px;
+  color: blue;
+}
+
 .gamechoices {
   display: flex;
+  margin-top: 25px;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
@@ -151,12 +195,14 @@ img {
 .gamechoicelabel {
   font-size: 25px;
   color: black;
+  margin: 5px;
 }
 
 .game-button {
+  height: 30px;
   width: auto;
   font-size: 20px;
-  margin: 20px;
+  margin: 10px;
   border-radius: 5px;
 }
 

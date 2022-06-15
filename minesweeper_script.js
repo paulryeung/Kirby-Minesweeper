@@ -3,15 +3,20 @@ let width = 4;
 let height = 4;
 let numfields = width * height;
 let bombs = 4;
-let flagImg = "./images/kirby_eating.jpg";
-let bombImg = "./images/bomb.jpg";
+let flagsUsed = 0;
+
+//set images and gif variables
+let flagImg = "./images/kirby_eating_t.jpg";
+let bombImg = "./images/bomb_t.jpg";
 let grassImg = "./images/grass.jpg";
 let kirbyFightGif = "./backgrounds/kirby_fight_transparent.gif";
 let kirbyCrashGif = "./backgrounds/kirby_crash.gif";
 let kirbyWinGif = "./backgrounds/kirby-celebrate.gif";
+let viewSize = "8vw";
+
+//game conditions
 let gameEnd = false; //if true, clicking anywhere on the board should do nothing.
 let victory = false;
-let viewSize = "8vw";
 
 //==== DOM Variables ====
 let boardEl = document.querySelector(".board");
@@ -22,8 +27,13 @@ let easygameEl = document.querySelector("#easygamebutton");
 let normalgameEl = document.querySelector("#normalgamebutton");
 let hardgameEl = document.querySelector("#hardgamebutton");
 
+//Aesthetic DOM variable setup
 let statusGif = document.querySelector(".statusgif");
 statusGif.src = kirbyFightGif;
+let bombsInPlayEl = document.querySelector("#spanbomb");
+bombsInPlayEl.textContent = bombs;
+let flagsUsedEl = document.querySelector("#spanflag");
+flagsUsedEl.textContent = flagsUsed;
 
 //============FUNCTIONS =====================
 
@@ -310,6 +320,23 @@ function assignBombCount() {
   }
 }
 
+//Cascading empty field, only calls this recursive function when empty square is clicked.
+function cascadeReveal(stringID) {
+  //first reveal the current square as empty
+  let curID = stringID;
+  //slice the number out
+  let numID = stringID.slice(1, 3);
+
+  console.log(
+    `cascadeReveal works! Also current ID is ${curID} and sliced number is ${numID}`
+  );
+
+  // let currentID = "" + h + w;
+  // let numID = parseInt(stringID, 10);
+  // let curID = `s${h}${w}`;
+  // let checkID = 0;
+}
+
 function checkGame() {
   //need to have all squares correct-move set to true
   let bombTripped = false;
@@ -381,7 +408,7 @@ function endGame() {
     announceEl.textContent = "VICTORY! TIME TO CELEBRATE!";
   } else if (victory === false) {
     statusGif2.src = kirbyCrashGif;
-    announceEl.textContent = "EXPLOSION! OOF, TIME TO TRY AGAIN!";
+    announceEl.textContent = "EXPLOSION! OOF, TRY AGAIN!";
   }
 }
 //empty's the board by removing all child divs
@@ -393,6 +420,9 @@ function emptyBoard() {
 
 function startGame() {
   //set necessary variables;
+  flagsUsed = 0;
+  flagsUsedEl.textContent = flagsUsed;
+
   gameEnd = false;
   victory = false;
 
@@ -429,18 +459,21 @@ boardEl.oncontextmenu = function (evt) {
 
   //Check if STATE was hidden, or else do nothing
   if (clickedSquare.getAttribute("state") == "hidden") {
-    //check if flag is visible, if so then switch back to grass
+    //check if flag is visible, if so then switch img to grass and decrease flag usage counter
     if (clickedSquare.getAttribute("red-flagged") === "true") {
-      //switch the image to grass
-
+      //flip the correct move and red-flagged triggers
       clickedSquare.setAttribute("red-flagged", "false");
       imageEl.src = grassImg;
       clickedSquare.setAttribute("correct-move", "false");
+      flagsUsed--;
+      flagsUsedEl.textContent = flagsUsed;
     }
-    //switch image to flag if not already
+    //switch image to flag if not already and increase flag usage counter
     else {
       imageEl.src = flagImg;
       clickedSquare.setAttribute("red-flagged", "true");
+      flagsUsed++;
+      flagsUsedEl.textContent = flagsUsed;
       //check if there is a bomb
       if (clickedSquare.getAttribute("has-bomb") === "true") {
         clickedSquare.setAttribute("correct-move", "true");
@@ -486,6 +519,10 @@ boardEl.addEventListener("click", function (evt) {
     else if (clickedSquare.getAttribute("bomb-count") === "0") {
       clickedSquare.setAttribute("correct-move", "true");
       imageEl.style.visibility = "hidden";
+
+      let stringID = clickedSquare.getAttribute("id");
+      console.log(`Made it here! ${stringID}`);
+      cascadeReveal(stringID);
     }
     //reveal an appropriate number, set the move to correct
     else {
@@ -503,6 +540,7 @@ boardEl.addEventListener("click", function (evt) {
 retryEl.addEventListener("click", function (evt) {
   let statusGif2 = document.querySelector(".statusgif");
   statusGif2.src = kirbyFightGif;
+  bombsInPlayEl.textContent = bombs;
   startGame();
 });
 
@@ -511,10 +549,12 @@ easygameEl.addEventListener("click", function (evt) {
   height = 4;
   width = 4;
   bombs = 4;
+
   numfields = width * height;
   viewSize = "8vw";
   let statusGif2 = document.querySelector(".statusgif");
   statusGif2.src = kirbyFightGif;
+  bombsInPlayEl.textContent = bombs;
   startGame();
 });
 
@@ -526,6 +566,7 @@ normalgameEl.addEventListener("click", function (evt) {
   viewSize = "8vw";
   let statusGif2 = document.querySelector(".statusgif");
   statusGif2.src = kirbyFightGif;
+  bombsInPlayEl.textContent = bombs;
   startGame();
 });
 
@@ -537,5 +578,6 @@ hardgameEl.addEventListener("click", function (evt) {
   viewSize = "5vw";
   let statusGif2 = document.querySelector(".statusgif");
   statusGif2.src = kirbyFightGif;
+  bombsInPlayEl.textContent = bombs;
   startGame();
 });
