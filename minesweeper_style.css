@@ -107,6 +107,7 @@ img {
   justify-content: center;
   align-items: center;
   height: 100%;
+  min-width: 275px;
 }
 
 .gamehud {

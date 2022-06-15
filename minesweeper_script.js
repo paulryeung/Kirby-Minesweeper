@@ -4,6 +4,7 @@ let height = 7;
 let numfields = width * height;
 let bombs = 10;
 let flagsUsed = 0;
+let foodNumber = 5;
 
 //set images and gif variables
 let flagImg = "./images/kirby_eating_t.jpg";
@@ -13,6 +14,9 @@ let kirbyFightGif = "./backgrounds/kirby_fight_transparent.gif";
 let kirbyCrashGif = "./backgrounds/kirby_crash.gif";
 let kirbyWinGif = "./backgrounds/kirby-celebrate.gif";
 let viewSize = "8vw";
+
+//creates a timer you can set
+const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 
 //game conditions
 let gameEnd = false; //if true, clicking anywhere on the board should do nothing.
@@ -109,9 +113,16 @@ function generateBoard() {
       squareEl.setAttribute("bomb-count", "0");
       squareEl.setAttribute("correct-move", "false");
       squareEl.setAttribute("red-flagged", "false");
+      squareEl.setAttribute("food-img", "0");
 
       //pop and set a bomb from the random Bomb array
       squareEl.setAttribute("has-bomb", randomBombArray.pop());
+
+      //if there is a bomb, assign a random non-zero food number
+      if (squareEl.getAttribute("has-bomb") === "true") {
+        let randFoodNum = Math.floor(Math.random() * foodNumber + 1);
+        squareEl.setAttribute("food-img", randFoodNum);
+      }
 
       //Setup images and number into the square (will be H1 number, or flag or bomb)
 
@@ -690,13 +701,36 @@ function endGame() {
   //change announcer text based on victory or defeat
   if (victory === true) {
     statusGif2.src = kirbyWinGif;
-
     announceEl.textContent = "VICTORY! TIME TO CELEBRATE!";
+
+    //transform bombs into food
+    transformFood();
   } else if (victory === false) {
     statusGif2.src = kirbyCrashGif;
     announceEl.textContent = "EXPLOSION! OOF, TRY AGAIN!";
   }
 }
+
+//if victory, turn bomb icons into food in a sequence
+async function transformFood() {
+  console.log("made it here!");
+  for (let h = 0; h < height; h++) {
+    for (let w = 0; w < width; w++) {
+      let curID = `s${h}${w}`;
+      let squareEl = document.getElementById(curID);
+
+      //if the square has a bomb, change the image food item
+      if (squareEl.getAttribute("has-bomb") === "true") {
+        let foodNum = squareEl.getAttribute("food-img");
+        squareEl.firstChild.src = `./images/food${foodNum}.jpg`;
+
+        //set the timer
+        await timer(500);
+      }
+    }
+  }
+}
+
 //empty's the board by removing all child divs
 function emptyBoard() {
   while (boardEl.firstChild) {

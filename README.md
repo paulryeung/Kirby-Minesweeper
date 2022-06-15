@@ -19,7 +19,6 @@ Comes in 3 difficulties of different grid sizes and bomb amounts
 ![dev_mode_on](https://user-images.githubusercontent.com/105737940/173935304-74c3d783-8cbd-41d4-b4af-787165affa18.png)
 ![kirby_defeat](https://user-images.githubusercontent.com/105737940/173935312-096be325-6a1c-4135-ae78-ecc64807548b.png)
 
-
 ## Rules & Objectives
 
 - Try to reveal all non-bomb squares on a grid while flagging all squares that have bombs!
@@ -61,3 +60,4 @@ There is no license for this.
 Inspiration, code snippets, etc.
 
 - [shuffling an array](https://stackoverflow.com/questions/1519736/random-shuffling-of-an-array)
+- [introducing delays](https://stackoverflow.com/questions/17883692/how-to-set-time-delay-in-javascript)
