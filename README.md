@@ -1,4 +1,4 @@
-# Minesweeper-Project
+# Title
 
 Kirby and the Tasty Minefields
 
@@ -16,17 +16,12 @@ Comes in 3 difficulties of different grid sizes and bomb amounts
 ### Dependencies
 
 - Files including: "index.html", "minesweeper_script.js", and "minesweeper_style.css"
+- Folders of images and backgrounds in the form of jpgs and gifs
 - A Web Browser, best played in Chrome
 
 ### Executing program
 
-- How to run the program
-- Step-by-step bullets
-
-```
-code blocks for commands
-```
-
+- https://paulryeung.github.io/Kirby-Minesweeper/
 - Being deployed on Github Pages
 - Open a web browser and open the link.
 
@@ -35,14 +30,27 @@ code blocks for commands
 Paul Yeung
 General Assembly Github [@paulryeung](https://git.generalassemb.ly/paulryeung/Minesweeper-Project)
 
-## Version History
+## Version or Commit History (Only Recent ones)
 
-- Working on this.... first time github project
-- 0.2
-  - Various bug fixes and optimizations
-  - See [commit change]() or See [release history]()
-- 0.1
-  - Initial Release
+Author: Paul Yeung
+Date: Wed Jun 15 15:10:37 2022 -0400
+
+    update readme.md
+
+Author: Paul Yeung
+Date: Wed Jun 15 14:49:51 2022 -0400
+
+    add dev mode button
+
+Author: Paul Yeung
+Date: Wed Jun 15 14:16:37 2022 -0400
+
+    cascading reveal function and minor visual updates
+
+Author: Paul Yeung
+Date: Wed Jun 15 11:54:31 2022 -0400
+
+added flag/bomb trackers and more visual improvements
 
 ## License
 
@@ -52,8 +60,4 @@ There is no license for this.
 
 Inspiration, code snippets, etc.
 
-- [awesome-readme](https://github.com/matiassingers/awesome-readme)
-- [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-- [dbader](https://github.com/dbader/readme-template)
-- [zenorocha](https://gist.github.com/zenorocha/4526327)
-- [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+- [shuffling an array](https://stackoverflow.com/questions/1519736/random-shuffling-of-an-array)
