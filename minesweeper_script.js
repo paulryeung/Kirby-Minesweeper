@@ -724,7 +724,7 @@ async function transformFood() {
         let foodNum = squareEl.getAttribute("food-img");
         squareEl.firstChild.src = `./images/food${foodNum}.jpg`;
 
-        //set the timer
+        //set the timer to half a second delay
         await timer(500);
       }
     }
