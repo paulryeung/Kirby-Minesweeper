@@ -94,7 +94,7 @@ span {
 }
 
 [has-bomb="true"] {
-  background-color: orange;
+  background-color: green;
 }
 
 img {

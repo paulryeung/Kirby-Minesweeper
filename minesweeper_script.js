@@ -861,7 +861,7 @@ normalgameEl.addEventListener("click", function (evt) {
 hardgameEl.addEventListener("click", function (evt) {
   height = 10;
   width = 10;
-  bombs = 30;
+  bombs = 25;
   numfields = width * height;
   viewSize = "5vw";
   let statusGif2 = document.querySelector(".statusgif");
@@ -881,6 +881,9 @@ devEl.addEventListener("click", function (evt) {
 
     allSquareEl.forEach(function (square) {
       square.firstChild.style.maxWidth = "95%";
+      if (square.getAttribute("has-bomb") === "true") {
+        square.style.backgroundColor = "orange";
+      }
     });
   } else if (evt.target.getAttribute("state") === "ON") {
     evt.target.setAttribute("state", "OFF");
@@ -888,6 +891,7 @@ devEl.addEventListener("click", function (evt) {
 
     allSquareEl.forEach(function (square) {
       square.firstChild.style.maxWidth = "100%";
+      square.style.backgroundColor = "green";
     });
   }
 });
