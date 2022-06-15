@@ -16,8 +16,9 @@ Comes in 3 difficulties of different grid sizes and bomb amounts
 
 ## Screenshots
 
-![Kirby losing] (./screenshots/kirby_defeat.png)
-![Dev Mode On] (./screenshots/dev_mode_on.png)
+![dev_mode_on](https://user-images.githubusercontent.com/105737940/173935304-74c3d783-8cbd-41d4-b4af-787165affa18.png)
+![kirby_defeat](https://user-images.githubusercontent.com/105737940/173935312-096be325-6a1c-4135-ae78-ecc64807548b.png)
+
 
 ## Rules & Objectives
 
