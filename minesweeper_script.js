@@ -3,21 +3,27 @@ let width = 4;
 let height = 4;
 let numfields = width * height;
 let bombs = 4;
-let flagImg = "./images/redflag.jpg";
+let flagImg = "./images/kirby_eating.jpg";
 let bombImg = "./images/bomb.jpg";
 let grassImg = "./images/grass.jpg";
+let kirbyFightGif = "./backgrounds/kirby_fight_transparent.gif";
+let kirbyCrashGif = "./backgrounds/kirby_crash.gif";
+let kirbyWinGif = "./backgrounds/kirby-celebrate.gif";
 let gameEnd = false; //if true, clicking anywhere on the board should do nothing.
 let victory = false;
 let viewSize = "8vw";
 
 //==== DOM Variables ====
 let boardEl = document.querySelector(".board");
-let retryEl = document.querySelector(".retrybutton");
+let retryEl = document.querySelector("#retrybutton");
 let announceEl = document.querySelector(".announcer");
 
-let easygameEl = document.querySelector(".easygamebutton");
-let normalgameEl = document.querySelector(".normalgamebutton");
-let hardgameEl = document.querySelector(".hardgamebutton");
+let easygameEl = document.querySelector("#easygamebutton");
+let normalgameEl = document.querySelector("#normalgamebutton");
+let hardgameEl = document.querySelector("#hardgamebutton");
+
+let statusGif = document.querySelector(".statusgif");
+statusGif.src = kirbyFightGif;
 
 //============FUNCTIONS =====================
 
@@ -63,8 +69,9 @@ function randomizeBombs() {
 function generateBoard() {
   let randomBombArray = randomizeBombs(width, height, bombs);
 
-  //set announcer to default
-  announceEl.textContent = "Let's clear some bombs!";
+  //set announcer and gif to default
+  statusGif = kirbyFightGif;
+  announceEl.textContent = "LETS CLEAR SOME BOMBS!";
 
   //console.log(randomBombArray);
   //creating the board
@@ -366,11 +373,15 @@ function endGame() {
     }
   }
 
+  let statusGif2 = document.querySelector(".statusgif");
   //change announcer text based on victory or defeat
   if (victory === true) {
-    announceEl.textContent = "VICTORY! Time to go home for some cake!";
+    statusGif2.src = kirbyWinGif;
+
+    announceEl.textContent = "VICTORY! TIME TO CELEBRATE!";
   } else if (victory === false) {
-    announceEl.textContent = "EXPLOSION! Time to try again!";
+    statusGif2.src = kirbyCrashGif;
+    announceEl.textContent = "EXPLOSION! OOF, TIME TO TRY AGAIN!";
   }
 }
 //empty's the board by removing all child divs
@@ -442,6 +453,7 @@ boardEl.oncontextmenu = function (evt) {
 //EVENTS IF YOU LEFT CLICK
 boardEl.addEventListener("click", function (evt) {
   //if game has ended, clicking does nothing and returns
+
   if (gameEnd === true) {
     return;
   }
@@ -489,6 +501,8 @@ boardEl.addEventListener("click", function (evt) {
 
 //RETRY BUTTON - will be left click only
 retryEl.addEventListener("click", function (evt) {
+  let statusGif2 = document.querySelector(".statusgif");
+  statusGif2.src = kirbyFightGif;
   startGame();
 });
 
@@ -499,6 +513,8 @@ easygameEl.addEventListener("click", function (evt) {
   bombs = 4;
   numfields = width * height;
   viewSize = "8vw";
+  let statusGif2 = document.querySelector(".statusgif");
+  statusGif2.src = kirbyFightGif;
   startGame();
 });
 
@@ -508,6 +524,8 @@ normalgameEl.addEventListener("click", function (evt) {
   bombs = 10;
   numfields = width * height;
   viewSize = "8vw";
+  let statusGif2 = document.querySelector(".statusgif");
+  statusGif2.src = kirbyFightGif;
   startGame();
 });
 
@@ -517,5 +535,7 @@ hardgameEl.addEventListener("click", function (evt) {
   bombs = 30;
   numfields = width * height;
   viewSize = "5vw";
+  let statusGif2 = document.querySelector(".statusgif");
+  statusGif2.src = kirbyFightGif;
   startGame();
 });

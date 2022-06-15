@@ -5,25 +5,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minesweeper</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
     <script defer src="minesweeper_script.js"></script>
     <link href="minesweeper_style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <div class="container">
-      <div class="titleSection">
-        <h1>WELCOME TO <span>MINESWEEPER</span></h1>
+      <div class="leftpane">
+        <img id="kirbyfriends" src="./backgrounds/kirby_friends_r_crop.jpg" />
+      </div>
+      <div class="middlepane">
+        <div class="titlesection">
+          <h1><span>KIRBY</span>and the<span>TASTY MINEFIELDS</span></h1>
+        </div>
+
+        <div class="content-wrap">
+          <div class="gameinterface">
+            <div class="gamehud">
+              <button id="retrybutton">RETRY</button>
+            </div>
+            <div class="board"></div>
+          </div>
+          <div class="sidebar">
+            <h3 class="announcer">VICTORY! TIME TO GO HOME FOR SOME CAKE.</h3>
+            <img
+              class="statusgif"
+              src="./backgrounds/kirby_fight_transparent.gif"
+            />
+            <div class="gamechoices">
+              <h3 class="gamechoicelabel">
+                <u><b>Difficulty Choices</b></u>
+              </h3>
+              <button class="game-button" id="easygamebutton">Easy Game</button>
+              <button class="game-button" id="normalgamebutton">
+                Normal Game
+              </button>
+              <button class="game-button" id="hardgamebutton">Hard Game</button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <nav>
-        <button class="easygamebutton">New Game - Easy</button>
-        <button class="normalgamebutton">New Game - Normal</button>
-        <button class="hardgamebutton">New Game - Hard</button>
-      </nav>
-      <h3 class="announcer">VICTORY! TIME TO GO HOME FOR SOME CAKE.</h3>
-      <div class="gameinterface">
-        <button class="retrybutton">RETRY</button>
+      <div class="rightpane">
+        <img id="kirbybomb" src="./backgrounds/kirby_minesweeping.jpg" />
       </div>
-      <div class="board"></div>
     </div>
   </body>
 </html>

@@ -1,12 +1,80 @@
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: aquamarine;
+}
+
 .container {
   width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: sp;
+}
+
+h1 {
+  font-family: "Pacifico", cursive;
+  font-size: 40px;
+  color: #de79dc;
+  text-align: center;
+}
+span {
+  font-size: 50px;
+  color: #de79dc;
+  color: #f799f5;
+}
+
+.leftpane {
+  width: 20%;
+  height: 95vh;
+  float: left;
+  border-collapse: collapse;
+
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.titlesection {
-  background-image: none;
+.middlepane {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 60%;
+  height: 95vh;
+  float: left;
+  border-collapse: collapse;
+  border-radius: 25px;
+  border: 10px solid gray;
+
+  background-image: url(./backgrounds/field_background.jpg);
+  background-repeat: none;
+  background-size: cover;
+}
+
+.rightpane {
+  width: 20%;
+  height: 95vh;
+  position: relative;
+  float: right;
+  border-collapse: collapse;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.gameinterface {
+  margin: 25px;
 }
 
 .board {
@@ -27,12 +95,81 @@
   background-color: orange;
 }
 
-h3 {
-  font-size: large;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 img {
   max-width: 95%;
+}
+
+.gameinterface {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.gamehud {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.sidebar {
+  height: auto;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 25px;
+}
+
+.announcer {
+  margin-top: 0;
+  font-size: 30px;
+  text-align: center;
+}
+
+.statusgif {
+  margin-bottom: 20px;
+}
+
+#retrybutton {
+  box-sizing: border-box;
+  width: 120px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.gamechoices {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 5px;
+  border: 3px solid black;
+}
+
+.gamechoicelabel {
+  font-size: 25px;
+  color: black;
+}
+
+.game-button {
+  width: auto;
+  font-size: 20px;
+  margin: 20px;
+  border-radius: 5px;
+}
+
+#kirbybomb {
+  height: 900px;
+  width: auto;
+  object-fit: cover;
+  border: none;
+  outline: none;
+}
+
+#kirbyfriends {
+  height: 900px;
+  width: auto;
+  object-fit: cover;
 }
