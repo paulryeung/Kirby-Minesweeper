@@ -96,7 +96,7 @@ span {
 }
 
 img {
-  max-width: 95%;
+  max-width: 100%;
 }
 
 .gameinterface {
@@ -109,8 +109,9 @@ img {
 
 .gamehud {
   display: flex;
+  width: 90%;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .sidebar {
@@ -134,10 +135,10 @@ img {
   height: 200 px;
 }
 
-#retrybutton {
+.hudbutton {
   box-sizing: border-box;
-  height: 30px;
-  width: 120px;
+  height: 35px;
+  width: auto;
   font-size: 20px;
   border-radius: 5px;
 }
@@ -199,7 +200,7 @@ img {
 }
 
 .game-button {
-  height: 30px;
+  height: 35px;
   width: auto;
   font-size: 20px;
   margin: 10px;

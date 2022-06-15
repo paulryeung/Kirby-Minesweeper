@@ -21,6 +21,7 @@ let victory = false;
 //==== DOM Variables ====
 let boardEl = document.querySelector(".board");
 let retryEl = document.querySelector("#retrybutton");
+let devEl = document.querySelector("#devbutton");
 let announceEl = document.querySelector(".announcer");
 
 let easygameEl = document.querySelector("#easygamebutton");
@@ -34,6 +35,8 @@ let bombsInPlayEl = document.querySelector("#spanbomb");
 bombsInPlayEl.textContent = bombs;
 let flagsUsedEl = document.querySelector("#spanflag");
 flagsUsedEl.textContent = flagsUsed;
+devEl.textContent = "Dev Mode: OFF";
+devEl.setAttribute("state", "OFF");
 
 //============FUNCTIONS =====================
 
@@ -93,7 +96,6 @@ function generateBoard() {
   statusGif = kirbyFightGif;
   announceEl.textContent = "LETS CLEAR SOME BOMBS!";
 
-  //console.log(randomBombArray);
   //creating the board
   for (let h = 0; h < height; h++) {
     for (let w = 0; w < width; w++) {
@@ -110,11 +112,8 @@ function generateBoard() {
 
       //pop and set a bomb from the random Bomb array
       squareEl.setAttribute("has-bomb", randomBombArray.pop());
-      //console.log(squareEl);
-      //console.log(squareEl.getAttribute("correct-move"));
 
       //Setup images and number into the square (will be H1 number, or flag or bomb)
-      //Numbers, textContent empty for now
 
       //Flag image, set to hidden
       let symbolEl = document.createElement("img");
@@ -130,7 +129,6 @@ function generateBoard() {
       boardEl.appendChild(squareEl);
     }
   }
-  //console.log(randomBombArray);
 }
 
 function assignBombCount() {
@@ -165,10 +163,6 @@ function assignBombCount() {
       if (numID + 10 >= height * 10) {
         isBottomEdge = true;
       }
-
-      // console.log(
-      //   `For Square ID ${numID}, Left Edge: ${isLeftEdge},  Right Edge: ${isRightEdge},  at Top: ${isTopEdge},  at Bottom: ${isBottomEdge}`
-      // );
 
       //now check the 8 possible sides, starting with each row
       //check top left square
@@ -379,14 +373,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion + 1 Recursion, MAKE SURE 4 IF ELSE STATEMENTS EACH
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -412,14 +406,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion!
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -444,14 +438,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion!
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -476,14 +470,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion!
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -508,14 +502,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion!
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -540,14 +534,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion!
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -573,14 +567,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion!
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -605,14 +599,14 @@ function cascadeReveal(stringID) {
     //3 Possible bases cases for recursion!
     //if square is null, then do nothing!
     if (checkSquare == null) {
-      console.log(`This square of ${checkID} doesn't exist!`);
+      //do nothing and move on
     }
     //next check if next square is revealed or flagged, don't do anything either
     else if (
       checkSquare.getAttribute("state") === "revealed" ||
       checkSquare.getAttribute("red-flagged") === "true"
     ) {
-      console.log("One of these conditions is true, do nothing!");
+      //do nothing and move on
     }
     //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
     else if (checkSquare.getAttribute("bomb-count") != 0) {
@@ -667,7 +661,6 @@ function checkGame() {
     endGame();
     //also check if bomb is tripped!
   } else if (bombTripped === true) {
-    console.log("Explosion! You have been defeated.");
     victory = false;
     endGame();
   }
@@ -718,6 +711,9 @@ function startGame() {
 
   gameEnd = false;
   victory = false;
+
+  devEl.textContent = "Dev Mode: OFF";
+  devEl.setAttribute("state", "OFF");
 
   emptyBoard();
   setupGrid();
@@ -872,4 +868,26 @@ hardgameEl.addEventListener("click", function (evt) {
   statusGif2.src = kirbyFightGif;
   bombsInPlayEl.textContent = bombs;
   startGame();
+});
+
+//dev mode/cheat button, changes images to be 95% so you can see underneath a bit.
+devEl.addEventListener("click", function (evt) {
+  let allSquareEl = document.querySelectorAll(".square");
+
+  //if off, toggle it ON
+  if (evt.target.getAttribute("state") === "OFF") {
+    evt.target.setAttribute("state", "ON");
+    evt.target.textContent = "Dev Mode: ON";
+
+    allSquareEl.forEach(function (square) {
+      square.firstChild.style.maxWidth = "95%";
+    });
+  } else if (evt.target.getAttribute("state") === "ON") {
+    evt.target.setAttribute("state", "OFF");
+    evt.target.textContent = "Dev Mode: OFF";
+
+    allSquareEl.forEach(function (square) {
+      square.firstChild.style.maxWidth = "100%";
+    });
+  }
 });
