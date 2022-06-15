@@ -204,6 +204,7 @@ img {
   font-size: 20px;
   margin: 10px;
   border-radius: 5px;
+  border-color: gray;
 }
 
 #kirbybomb {
@@ -218,4 +219,15 @@ img {
   height: 900px;
   width: auto;
   object-fit: cover;
+}
+
+#easygamebutton {
+  background-color: #0bf72f;
+}
+
+#normalgamebutton {
+  background-color: #e5f709;
+}
+#hardgamebutton {
+  background-color: #b91318;
 }

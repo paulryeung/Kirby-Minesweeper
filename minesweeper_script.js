@@ -1,8 +1,8 @@
 //===== Constants and Variables =====
-let width = 4;
-let height = 4;
+let width = 7;
+let height = 7;
 let numfields = width * height;
-let bombs = 4;
+let bombs = 10;
 let flagsUsed = 0;
 
 //set images and gif variables
@@ -42,6 +42,16 @@ function setupGrid() {
   //suggested change in code:
   boardEl.style.gridTemplateColumns = `repeat(${width}, minmax(50px, 3vw))`;
   boardEl.style.gridTemplateRows = `repeat(${height}, minmax(50px, 3vw))`;
+}
+
+//takes a number and returns an id tag of "s+number" with 2 digits, can give nonsensical s+ negative numbers too
+function convertNumToID(number) {
+  //properly setup string id numbers
+  if (number < 10) {
+    return `s0${number}`;
+  } else {
+    return `s${number}`;
+  }
 }
 
 //Scrambles an Array
@@ -324,17 +334,300 @@ function assignBombCount() {
 function cascadeReveal(stringID) {
   //first reveal the current square as empty
   let curID = stringID;
+  let checkID = "";
+  let checkSquare = "";
+  let curSquare = document.getElementById(curID);
+  curSquare.setAttribute("state", "revealed");
+  curSquare.setAttribute("correct-move", "true");
+  curSquare.firstChild.style.visibility = "hidden";
+
   //slice the number out
-  let numID = stringID.slice(1, 3);
+  let stringNumID = stringID.slice(1, 3);
+  let numID = parseInt(stringNumID, 10);
 
-  console.log(
-    `cascadeReveal works! Also current ID is ${curID} and sliced number is ${numID}`
-  );
+  //define 4 edges again
+  let isLeftEdge = false;
+  let isRightEdge = false;
+  let isTopEdge = false;
+  let isBottomEdge = false;
 
-  // let currentID = "" + h + w;
-  // let numID = parseInt(stringID, 10);
-  // let curID = `s${h}${w}`;
-  // let checkID = 0;
+  //assign booleans to flag 4 possible edges
+  //check if left edge
+  if (numID % 10 === 0) {
+    isLeftEdge = true;
+  }
+  //check if right edge
+  if (numID % 10 === width - 1) {
+    isRightEdge = true;
+  }
+  //check if top edge
+  if (numID - 10 < 0) {
+    isTopEdge = true;
+  }
+  //check if bottom edge
+  if (numID + 10 >= height * 10) {
+    isBottomEdge = true;
+  }
+
+  //======check Top Left Square=====
+
+  if (isLeftEdge === false && isTopEdge === false) {
+    let checkNumID = numID - 11;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion + 1 Recursion, MAKE SURE 4 IF ELSE STATEMENTS EACH
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
+
+  //======check Top Square============
+  if (isTopEdge === false) {
+    checkNumID = numID - 10;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion!
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
+  //======check Top Right Square============
+  if (isRightEdge === false && isTopEdge === false) {
+    checkNumID = numID - 9;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion!
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
+  //======check Left Square============
+  if (isLeftEdge === false) {
+    checkNumID = numID - 1;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion!
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
+  //======check Right Square============
+  if (isRightEdge === false) {
+    checkNumID = numID + 1;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion!
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
+  //======check Bottom Left Square============
+  if (isLeftEdge === false && isBottomEdge === false) {
+    checkNumID = numID + 9;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion!
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
+
+  //======check Bottom Square============
+  if (isBottomEdge === false) {
+    checkNumID = numID + 10;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion!
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
+  //======check Bottom Right Square============
+  if (isRightEdge === false && isBottomEdge === false) {
+    checkNumID = numID + 11;
+    checkID = convertNumToID(checkNumID);
+    checkSquare = document.getElementById(checkID);
+
+    //3 Possible bases cases for recursion!
+    //if square is null, then do nothing!
+    if (checkSquare == null) {
+      console.log(`This square of ${checkID} doesn't exist!`);
+    }
+    //next check if next square is revealed or flagged, don't do anything either
+    else if (
+      checkSquare.getAttribute("state") === "revealed" ||
+      checkSquare.getAttribute("red-flagged") === "true"
+    ) {
+      console.log("One of these conditions is true, do nothing!");
+    }
+    //now check if it's a number square, since it exists, is hidden and not flagged yet, simply reveal
+    else if (checkSquare.getAttribute("bomb-count") != 0) {
+      checkSquare.setAttribute("state", "revealed");
+      checkSquare.setAttribute("correct-move", "true");
+
+      let bombCount = checkSquare.getAttribute("bomb-count");
+      checkSquare.firstChild.src = `./images/${bombCount}.jpg`;
+      checkSquare.firstChild.style.visibility = "visible";
+    }
+    //no other possibility than another empty square, go in and cascade.
+    else {
+      cascadeReveal(checkID);
+    }
+  }
 }
 
 function checkGame() {
@@ -517,11 +810,10 @@ boardEl.addEventListener("click", function (evt) {
     }
     //if the number is 0, simply hide the grass, do nothing or fan out special
     else if (clickedSquare.getAttribute("bomb-count") === "0") {
-      clickedSquare.setAttribute("correct-move", "true");
-      imageEl.style.visibility = "hidden";
+      //clickedSquare.setAttribute("correct-move", "true");
+      //imageEl.style.visibility = "hidden";
 
       let stringID = clickedSquare.getAttribute("id");
-      console.log(`Made it here! ${stringID}`);
       cascadeReveal(stringID);
     }
     //reveal an appropriate number, set the move to correct
