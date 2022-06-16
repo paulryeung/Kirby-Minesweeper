@@ -719,8 +719,12 @@ async function transformFood() {
       let curID = `s${h}${w}`;
       let squareEl = document.getElementById(curID);
 
+      //break out of async loops and function if game has started again
+      if (gameEnd === false) {
+        break;
+      }
       //if the square has a bomb, change the image food item
-      if (squareEl.getAttribute("has-bomb") === "true") {
+      else if (squareEl.getAttribute("has-bomb") === "true") {
         let foodNum = squareEl.getAttribute("food-img");
         squareEl.firstChild.src = `./images/food${foodNum}.jpg`;
 
