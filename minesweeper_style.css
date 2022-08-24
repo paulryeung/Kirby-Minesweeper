@@ -120,12 +120,12 @@ img {
 .gamehud-btns {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .sidebar {
   height: auto;
-  width: 300px;
+  width: 340px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -190,6 +190,24 @@ img {
 #spanflag {
   font-size: 40px;
   color: blue;
+}
+
+/* MUSIC AND SOUND HERE */
+.volume-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.music-slider {
+  display: flex;
+  flex-direction: row;
+}
+
+#bgm-vol {
+  margin-left: 20px;
+  margin-right: 20px;
+  transform: scale(1.2);
 }
 
 .gamechoices {

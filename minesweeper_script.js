@@ -15,6 +15,13 @@ let kirbyCrashGif = "./backgrounds/kirby_crash.gif";
 let kirbyWinGif = "./backgrounds/kirby-celebrate.gif";
 let viewSize = "8vw";
 
+//set up music and sound states
+//const bgmplayer = new Audio();
+const bgmAudioEl = document.getElementById("bgm-fx");
+const bombAudioEl = document.getElementById("bomb-fx");
+const deathAudioEl = document.getElementById("death-fx");
+const victoryAudioEl = document.getElementById("victory-fx");
+
 //creates a timer you can set
 const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -98,7 +105,8 @@ function generateBoard() {
 
   //set announcer and gif to default
   statusGif = kirbyFightGif;
-  announceEl.textContent = "LETS CLEAR SOME BOMBS!";
+  //announceEl.textContent = "LETS CLEAR SOME BOMBS!";
+  announceEl.textContent = "CLICK ON BOARD FOR GAME & MUSIC START!";
 
   //creating the board
   for (let h = 0; h < height; h++) {
@@ -682,6 +690,9 @@ function endGame() {
   //set game state to ended so clicking does nothing
   gameEnd = true;
 
+  //stop and reset all music and sounds
+  bgmAudioEl.pause();
+
   //sets all squares to revealed so clicking does nothing
   for (let h = 0; h < height; h++) {
     for (let w = 0; w < width; w++) {
@@ -702,10 +713,15 @@ function endGame() {
   if (victory === true) {
     statusGif2.src = kirbyWinGif;
     announceEl.textContent = "VICTORY! TIME TO CELEBRATE!";
+    victoryAudioEl.play();
 
     //transform bombs into food
     transformFood();
   } else if (victory === false) {
+    //play bomb and kirby death sound
+    bombAudioEl.play();
+    deathAudioEl.play();
+
     statusGif2.src = kirbyCrashGif;
     announceEl.textContent = "EXPLOSION! OOF, TRY AGAIN!";
   }
@@ -735,6 +751,12 @@ async function transformFood() {
   }
 }
 
+function initMusic() {
+  //stop and reset bgm current time to 0;
+  bgmAudioEl.pause();
+  bgmAudioEl.currentTime = 0;
+}
+
 //empty's the board by removing all child divs
 function emptyBoard() {
   while (boardEl.firstChild) {
@@ -752,6 +774,14 @@ function startGame() {
 
   devEl.textContent = "Dev Mode: OFF";
   devEl.setAttribute("state", "OFF");
+
+  //stop and reset all sounds effects; bombs, death, actions
+  bombAudioEl.pause();
+  deathAudioEl.pause();
+  victoryAudioEl.pause();
+  bombAudioEl.currentTime = 0;
+  deathAudioEl.currentTime = 0;
+  victoryAudioEl.currentTime = 0;
 
   emptyBoard();
   setupGrid();
@@ -772,7 +802,13 @@ boardEl.oncontextmenu = function (evt) {
   //if game has ended, clicking does nothing and returns
   if (gameEnd === true) {
     return;
+  } else if (bgmAudioEl.paused == true) {
+    //set the text to clearing bombs, gogo
+    announceEl.textContent = "LETS CLEAR SOME BOMBS!";
+    bgmAudioEl.play();
   }
+
+  //check if music is playing, this works as first click anyways
 
   let clickedSquare = evt.target;
   let imageEl = clickedSquare.firstChild;
@@ -813,10 +849,19 @@ boardEl.oncontextmenu = function (evt) {
 //EVENTS IF YOU LEFT CLICK
 boardEl.addEventListener("click", function (evt) {
   //if game has ended, clicking does nothing and returns
-
+  console.log("Start of game is game paused?", bgmAudioEl.paused);
   if (gameEnd === true) {
     return;
+  } else if (bgmAudioEl.paused == true) {
+    //set the text to clearing bombs, gogo
+    announceEl.textContent = "LETS CLEAR SOME BOMBS!";
+    bgmAudioEl.play();
   }
+  //else run if bgm paused (whether load or starting new game)
+  // else if (bgmAudioEl.pause() == true) {
+
+  //   bgmAudioEl.play();
+  // }
 
   let clickedSquare = evt.target;
   let imageEl = clickedSquare.firstChild;

@@ -35,6 +35,7 @@
             </div>
             <div class="board"></div>
           </div>
+          <!-- Entire Side Bar starts here! -->
           <div class="sidebar">
             <img
               class="statusgif"
@@ -53,10 +54,36 @@
                 Bombs in Field: <span id="spanbomb">x</span>
               </h3>
             </div>
+            <!-- Volume Controls here! -->
+            <div class="volume-controls">
+              <div class="music-slider">
+                <h3 class="h3-icon-text">Music :</h3>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="50"
+                  class="slider"
+                  id="bgm-vol"
+                />
+                <input type="checkbox" />
+                <h3>Music On</h3>
+              </div>
+              <!-- Set up audio files in html -->
+              <audio
+                id="bgm-fx"
+                src="./sounds/greengreen.mp3"
+                volume="0.5"
+                loop
+              />
+              <audio id="bomb-fx" src="./sounds/bomb.mp3" volume="0.5" />
+              <audio id="death-fx" src="./sounds/death.mp3" volume="0.5" />
+              <audio id="victory-fx" src="./sounds/victory.mp3" volume="0.5" />
+            </div>
 
             <div class="gamechoices">
               <h3 class="gamechoicelabel">
-                <u><b>Difficulty Choices</b></u>
+                <u><b>Choose Difficulty</b></u>
               </h3>
               <button class="game-button" id="easygamebutton">Easy Game</button>
               <button class="game-button" id="normalgamebutton">
