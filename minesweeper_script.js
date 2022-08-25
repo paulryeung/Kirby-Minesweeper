@@ -25,11 +25,13 @@ const clickVol = 0.15;
 let musicOn = 1;
 let soundOn = 1;
 
-//setup music sliders
+//setup music sliders and checkboxes
 const bgmSliderEl = document.getElementById("bgm-slider");
 const soundSliderEl = document.getElementById("sound-slider");
+const bgmCheckboxEl = document.getElementById("bgm-checkbox");
+const soundCheckboxEl = document.getElementById("sound-checkbox");
 
-//set up music and sound states
+//set up initial music and sound states
 //background music initial volume
 const bgmAudioEl = document.getElementById("bgm-fx");
 bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
@@ -798,6 +800,7 @@ function startGame() {
   devEl.setAttribute("state", "OFF");
 
   //stop and reset all sounds effects; bombs, death, actions
+  bgmAudioEl.pause();
   bombAudioEl.pause();
   deathAudioEl.pause();
   victoryAudioEl.pause();
@@ -816,6 +819,7 @@ startGame();
 
 //===============EVENT LISTENERS!!=====================
 
+//===========CLICK EVENT LISTENERS===============
 //EVENTS IF YOU RIGHT CLICK
 //prevents Chrome contextmenu from popping up on right click in board window, also acts as Right click action
 boardEl.oncontextmenu = function (evt) {
@@ -1001,15 +1005,50 @@ devEl.addEventListener("click", function (evt) {
   }
 });
 
+//======= ALL SOUND RELATED EVENT LISTENERS =======
+//================================================
 //Event listener for music slider to control bgm volume or sound
 bgmSliderEl.addEventListener("change", function (evt) {
   //change background music, boost value 0.3
-  bgmAudioEl.volume = (evt.currentTarget.value / 100) * bgmVol * musicOn;
+  bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
 });
 
-//
 soundSliderEl.addEventListener("change", function (evt) {
   //change all sound effects, bomb, death, clicks
-  bombAudioEl.volume = (evt.currentTarget.value / 100) * bombVol * soundOn;
-  deathAudioEl.volume = (evt.currentTarget.value / 100) * deathVol * soundOn;
+  bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
+  deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
+});
+
+//Event listeners for smooth dragging live volume change
+bgmSliderEl.addEventListener("input", function (evt) {
+  //update the volume
+  bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
+});
+
+soundSliderEl.addEventListener("input", function (evt) {
+  //change all sound effects, bomb, death, clicks
+  bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
+  deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
+});
+
+//Event Listener for music and sound checkboxes
+bgmCheckboxEl.addEventListener("change", function (evt) {
+  if (evt.target.checked) {
+    musicOn = 1;
+  } else {
+    musicOn = 0;
+  }
+  //update the volume
+  bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
+});
+
+soundCheckboxEl.addEventListener("change", function (evt) {
+  if (evt.target.checked) {
+    soundOn = 1;
+  } else {
+    soundOn = 0;
+  }
+  //update the volume on various sounds
+  bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
+  deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
 });

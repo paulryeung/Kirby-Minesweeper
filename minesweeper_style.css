@@ -130,7 +130,7 @@ img {
 
 .sidebar {
   height: auto;
-  width: 450px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -145,7 +145,7 @@ img {
 }
 
 .statusgif-div {
-  width: 400px;
+  width: 390px;
   margin-bottom: 10px;
 }
 
@@ -229,6 +229,12 @@ img {
   margin-left: 20px;
   margin-right: 20px;
   transform: scale(1.2);
+}
+
+#sound-checkbox,
+#bgm-checkbox {
+  transform: scale(1.5);
+  margin: 0 10px;
 }
 
 /* Game Choices Styling Here */
