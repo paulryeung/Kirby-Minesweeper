@@ -15,11 +15,27 @@ let kirbyCrashGif = "./backgrounds/kirby_crash.gif";
 let kirbyWinGif = "./backgrounds/kirby-celebrate.gif";
 let viewSize = "8vw";
 
+//set array for various click sounds
+let clickSounds = [
+  { link: "./sounds/eh.mp3", vol: 0.08 },
+  { link: "./sounds/ha.mp3", vol: 0.1 },
+  { link: "./sounds/poyo.mp3", vol: 0.52 },
+  { link: "./sounds/hi.mp3", vol: 0.5 },
+  { link: "./sounds/hut.mp3", vol: 0.3 },
+  { link: "./sounds/transform.mp3", vol: 0.15 },
+  { link: "./sounds/whoa.mp3", vol: 0.1 },
+  { link: "./sounds/ya.mp3", vol: 0.2 },
+  //inhale is only for planting flags
+  { link: "./sounds/inhale.mp3", vol: 0.1 },
+];
+let clickIndex = 0;
+
 //Initialize multipliers for sound effects cause too loud
 const bgmVol = 0.3;
 const bombVol = 0.12;
 const deathVol = 0.12;
-const clickVol = 0.15;
+const victoryVol = 0.3;
+let clickVol = 0.15;
 
 //checkbox values toggling sound or music
 let musicOn = 1;
@@ -35,14 +51,16 @@ const soundCheckboxEl = document.getElementById("sound-checkbox");
 //background music initial volume
 const bgmAudioEl = document.getElementById("bgm-fx");
 bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
+const victoryAudioEl = document.getElementById("victory-fx");
+victoryAudioEl.volume = (bgmSliderEl.value / 100) * victoryVol * musicOn;
 
 //all other sounds initial volume
 const bombAudioEl = document.getElementById("bomb-fx");
 bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
 const deathAudioEl = document.getElementById("death-fx");
 deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
-
-const victoryAudioEl = document.getElementById("victory-fx");
+let clickAudioEl = document.getElementById("click-fx");
+clickAudioEl.volume = (soundSliderEl.value / 100) * clickVol * soundOn;
 
 //creates a timer you can set
 const timer = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -739,6 +757,9 @@ function endGame() {
     announceEl.textContent = "VICTORY! TIME TO CELEBRATE!";
     victoryAudioEl.play();
 
+    //online time you reset bgm audio
+    bgmAudioEl.currentTime = 0;
+
     //transform bombs into food
     transformFood();
   } else if (victory === false) {
@@ -775,12 +796,6 @@ async function transformFood() {
   }
 }
 
-function initMusic() {
-  //stop and reset bgm current time to 0;
-  bgmAudioEl.pause();
-  bgmAudioEl.currentTime = 0;
-}
-
 //empty's the board by removing all child divs
 function emptyBoard() {
   while (boardEl.firstChild) {
@@ -799,14 +814,17 @@ function startGame() {
   devEl.textContent = "Dev Mode: OFF";
   devEl.setAttribute("state", "OFF");
 
-  //stop and reset all sounds effects; bombs, death, actions
+  //stop but don't reset background music
   bgmAudioEl.pause();
+  //stop and reset all sounds effects; bombs, death, actions
   bombAudioEl.pause();
   deathAudioEl.pause();
   victoryAudioEl.pause();
+  clickAudioEl.pause();
   bombAudioEl.currentTime = 0;
   deathAudioEl.currentTime = 0;
   victoryAudioEl.currentTime = 0;
+  clickAudioEl.currentTime = 0;
 
   emptyBoard();
   setupGrid();
@@ -856,6 +874,9 @@ boardEl.oncontextmenu = function (evt) {
       clickedSquare.setAttribute("correct-move", "false");
       flagsUsed--;
       flagsUsedEl.textContent = flagsUsed;
+
+      //stop any sound effects, especially to disable flag
+      clickAudioEl.pause();
     }
     //switch image to flag if not already and increase flag usage counter
     else {
@@ -867,6 +888,15 @@ boardEl.oncontextmenu = function (evt) {
       if (clickedSquare.getAttribute("has-bomb") === "true") {
         clickedSquare.setAttribute("correct-move", "true");
       }
+      //play a sound for planting flag, indexed between 3 and 4
+      clickIndex = Math.floor(Math.random() * 2) + 3;
+      //stop current sound effect,
+      clickAudioEl.pause();
+      //use the inhale sound index
+      clickAudioEl.src = clickSounds[8].link;
+      clickVol = clickSounds[8].vol;
+      clickAudioEl.volume = (soundSliderEl.value / 100) * clickVol * soundOn;
+      clickAudioEl.play();
     }
   }
   checkGame();
@@ -884,10 +914,6 @@ boardEl.addEventListener("click", function (evt) {
     bgmAudioEl.play();
   }
   //else run if bgm paused (whether load or starting new game)
-  // else if (bgmAudioEl.pause() == true) {
-
-  //   bgmAudioEl.play();
-  // }
 
   let clickedSquare = evt.target;
   let imageEl = clickedSquare.firstChild;
@@ -918,6 +944,16 @@ boardEl.addEventListener("click", function (evt) {
       //clickedSquare.setAttribute("correct-move", "true");
       //imageEl.style.visibility = "hidden";
 
+      //play a sound before cascade starts indexed between 0 and 7
+      clickIndex = Math.floor(Math.random() * 8);
+      //stop current sound effect,
+      clickAudioEl.pause();
+      //adjust with new index and then play
+      clickAudioEl.src = clickSounds[clickIndex].link;
+      clickVol = clickSounds[clickIndex].vol;
+      clickAudioEl.volume = (soundSliderEl.value / 100) * clickVol * soundOn;
+      clickAudioEl.play();
+
       let stringID = clickedSquare.getAttribute("id");
       cascadeReveal(stringID);
     }
@@ -927,6 +963,16 @@ boardEl.addEventListener("click", function (evt) {
       let bombCount = clickedSquare.getAttribute("bomb-count");
       imageEl.src = `./images/${bombCount}.jpg`;
       imageEl.style.visibility = "visible";
+
+      //play a sound before here too indexed between 0 and 7
+      clickIndex = Math.floor(Math.random() * 8);
+      //stop current sound effect,
+      clickAudioEl.pause();
+      //adjust with new index and then play
+      clickAudioEl.src = clickSounds[clickIndex].link;
+      clickVol = clickSounds[clickIndex].vol;
+      clickAudioEl.volume = (soundSliderEl.value / 100) * clickVol * soundOn;
+      clickAudioEl.play();
     }
   }
 
@@ -1009,26 +1055,30 @@ devEl.addEventListener("click", function (evt) {
 //================================================
 //Event listener for music slider to control bgm volume or sound
 bgmSliderEl.addEventListener("change", function (evt) {
-  //change background music, boost value 0.3
+  //change background music
   bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
+  victoryAudioEl.volume = (bgmSliderEl.value / 100) * victoryVol * musicOn;
 });
 
 soundSliderEl.addEventListener("change", function (evt) {
   //change all sound effects, bomb, death, clicks
   bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
   deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
+  clickAudioEl.volume = (soundSliderEl.value / 100) * clickVol * soundOn;
 });
 
 //Event listeners for smooth dragging live volume change
 bgmSliderEl.addEventListener("input", function (evt) {
   //update the volume
   bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
+  victoryAudioEl.volume = (bgmSliderEl.value / 100) * victoryVol * musicOn;
 });
 
 soundSliderEl.addEventListener("input", function (evt) {
   //change all sound effects, bomb, death, clicks
   bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
   deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
+  clickAudioEl.volume = (soundSliderEl.value / 100) * clickVol * soundOn;
 });
 
 //Event Listener for music and sound checkboxes
@@ -1038,8 +1088,9 @@ bgmCheckboxEl.addEventListener("change", function (evt) {
   } else {
     musicOn = 0;
   }
-  //update the volume
+  //update the bgm and victory theme volume
   bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
+  victoryAudioEl.volume = (bgmSliderEl.value / 100) * victoryVol * musicOn;
 });
 
 soundCheckboxEl.addEventListener("change", function (evt) {
@@ -1051,4 +1102,5 @@ soundCheckboxEl.addEventListener("change", function (evt) {
   //update the volume on various sounds
   bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
   deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
+  clickAudioEl.volume = (soundSliderEl.value / 100) * clickVol * soundOn;
 });
