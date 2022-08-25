@@ -15,11 +15,31 @@ let kirbyCrashGif = "./backgrounds/kirby_crash.gif";
 let kirbyWinGif = "./backgrounds/kirby-celebrate.gif";
 let viewSize = "8vw";
 
+//Initialize multipliers for sound effects cause too loud
+const bgmVol = 0.3;
+const bombVol = 0.12;
+const deathVol = 0.12;
+const clickVol = 0.15;
+
+//checkbox values toggling sound or music
+let musicOn = 1;
+let soundOn = 1;
+
+//setup music sliders
+const bgmSliderEl = document.getElementById("bgm-slider");
+const soundSliderEl = document.getElementById("sound-slider");
+
 //set up music and sound states
-//const bgmplayer = new Audio();
+//background music initial volume
 const bgmAudioEl = document.getElementById("bgm-fx");
+bgmAudioEl.volume = (bgmSliderEl.value / 100) * bgmVol * musicOn;
+
+//all other sounds initial volume
 const bombAudioEl = document.getElementById("bomb-fx");
+bombAudioEl.volume = (soundSliderEl.value / 100) * bombVol * soundOn;
 const deathAudioEl = document.getElementById("death-fx");
+deathAudioEl.volume = (soundSliderEl.value / 100) * deathVol * soundOn;
+
 const victoryAudioEl = document.getElementById("victory-fx");
 
 //creates a timer you can set
@@ -54,8 +74,10 @@ devEl.setAttribute("state", "OFF");
 //set up the correct grid viewing sizes
 function setupGrid() {
   //suggested change in code:
-  boardEl.style.gridTemplateColumns = `repeat(${width}, minmax(50px, 3vw))`;
-  boardEl.style.gridTemplateRows = `repeat(${height}, minmax(50px, 3vw))`;
+  // boardEl.style.gridTemplateColumns = `repeat(${width}, minmax(50px, 3vw))`;
+  // boardEl.style.gridTemplateRows = `repeat(${height}, minmax(50px, 3vw))`;
+  boardEl.style.gridTemplateColumns = `repeat(${width}, 60px`;
+  boardEl.style.gridTemplateRows = `repeat(${height}, 60px`;
 }
 
 //takes a number and returns an id tag of "s+number" with 2 digits, can give nonsensical s+ negative numbers too
@@ -977,4 +999,17 @@ devEl.addEventListener("click", function (evt) {
       square.style.backgroundColor = "green";
     });
   }
+});
+
+//Event listener for music slider to control bgm volume or sound
+bgmSliderEl.addEventListener("change", function (evt) {
+  //change background music, boost value 0.3
+  bgmAudioEl.volume = (evt.currentTarget.value / 100) * bgmVol * musicOn;
+});
+
+//
+soundSliderEl.addEventListener("change", function (evt) {
+  //change all sound effects, bomb, death, clicks
+  bombAudioEl.volume = (evt.currentTarget.value / 100) * bombVol * soundOn;
+  deathAudioEl.volume = (evt.currentTarget.value / 100) * deathVol * soundOn;
 });

@@ -25,7 +25,11 @@
         <div class="content-wrap">
           <div class="gameinterface">
             <div class="gamehud">
-              <h3 class="announcer">VICTORY! TIME TO GO HOME FOR SOME CAKE.</h3>
+              <div class="announcer-div">
+                <h3 class="announcer">
+                  VICTORY! TIME TO GO HOME FOR SOME CAKE.
+                </h3>
+              </div>
               <div class="gamehud-btns">
                 <button class="hudbutton" id="devbutton" state="OFF">
                   Dev Mode: OFF
@@ -37,26 +41,30 @@
           </div>
           <!-- Entire Side Bar starts here! -->
           <div class="sidebar">
-            <img
-              class="statusgif"
-              src="./backgrounds/kirby_fight_transparent.gif"
-            />
-            <div class="flags-used">
-              <img id="flag-icon" src="./images/kirby_eating_t.jpg" />
-              <h3 id="h3-icon-text">
-                Flags Used: <span id="spanflag">X</span>
-              </h3>
+            <div class="statusgif-div">
+              <img
+                class="statusgif"
+                src="./backgrounds/kirby_fight_transparent.gif"
+              />
             </div>
+            <div class="icons-div">
+              <div class="flags-used">
+                <img id="flag-icon" src="./images/kirby_eating_t.jpg" />
+                <h3 id="h3-icon-text">
+                  Flags Used: <span id="spanflag">X</span>
+                </h3>
+              </div>
 
-            <div class="bombs-in-play">
-              <img id="bomb-icon" src="./images/bomb_t.jpg" />
-              <h3 class="h3-icon-text">
-                Bombs in Field: <span id="spanbomb">x</span>
-              </h3>
+              <div class="bombs-in-play">
+                <img id="bomb-icon" src="./images/bomb_t.jpg" />
+                <h3 class="h3-icon-text">
+                  Bombs in Field: <span id="spanbomb">x</span>
+                </h3>
+              </div>
             </div>
             <!-- Volume Controls here! -->
             <div class="volume-controls">
-              <div class="music-slider">
+              <div class="music-slider-div">
                 <h3 class="h3-icon-text">Music :</h3>
                 <input
                   type="range"
@@ -64,10 +72,23 @@
                   max="100"
                   value="50"
                   class="slider"
-                  id="bgm-vol"
+                  id="bgm-slider"
                 />
-                <input type="checkbox" />
+                <input type="checkbox" id="music-checkbox" checked />
                 <h3>Music On</h3>
+              </div>
+              <div class="sound-slider-div">
+                <h3 class="h3-icon-text">Sound :</h3>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="50"
+                  class="slider"
+                  id="sound-slider"
+                />
+                <input type="checkbox" id="sound-checkbox" checked />
+                <h3>Sound On</h3>
               </div>
               <!-- Set up audio files in html -->
               <audio
